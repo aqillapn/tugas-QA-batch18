@@ -1,0 +1,143 @@
+{
+  "stats": {
+    "suites": 2,
+    "tests": 2,
+    "passes": 1,
+    "pending": 0,
+    "failures": 1,
+    "start": "2026-10-24T17:23:56.335Z",
+    "end": "2026-10-24T17:24:11.117Z",
+    "duration": 14782,
+    "testsRegistered": 2,
+    "passPercent": 50,
+    "pendingPercent": 0,
+    "other": 0,
+    "hasOther": false,
+    "skipped": 0,
+    "hasSkipped": false
+  },
+  "results": [
+    {
+      "uuid": "b47d9376-53b9-46fc-b957-25d597f3f499",
+      "title": "",
+      "fullFile": "",
+      "file": "",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "02903015-097d-41db-8a0a-26a48e416bf8",
+          "title": "Open Belajar Bareng - Add User",
+          "fullFile": "/Users/gerardharahap/Documents/QA_Batch18/web-ui-automation/test/addUser.js",
+          "file": "/test/addUser.js",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "Should add new user and display it in the list",
+              "fullTitle": "Open Belajar Bareng - Add User Should add new user and display it in the list",
+              "timedOut": false,
+              "duration": 12459,
+              "state": "failed",
+              "speed": null,
+              "pass": false,
+              "fail": true,
+              "pending": false,
+              "context": null,
+              "code": "let options = new chrome.Options();\noptions.addArguments(\"--disable-features=PasswordLeakDetection\");\noptions.setUserPreferences({\n    \"credentials_enable_service\": false,\n    \"profile.password_manager_enabled\": false,\n    \"profile.password_manager_leak_detection\": false\n});\nlet driver = await new Builder()\n    .forBrowser(\"chrome\")\n    .setChromeOptions(options)\n    .build();\ntry {\n    await driver.get(\"https://belajar-bareng.onrender.com/\");\n    // ===== Login dulu =====\n    let loginUsernameInput = await driver.wait(\n        until.elementLocated(\n            By.xpath('//input[@data-testid=\"username-input\"]')\n        ),\n        30000\n    );\n    let loginPasswordInput = await driver.findElement(\n        By.xpath('//input[@data-testid=\"password-input\"]')\n    );\n    let loginButton = await driver.findElement(\n        By.xpath('//button[@data-testid=\"login-button\"]')\n    );\n    await loginUsernameInput.sendKeys(\"admin\");\n    await loginPasswordInput.sendKeys(\"admin\");\n    await loginButton.click();\n    // ===== Buka form add user =====\n    let addUserButton = await driver.wait(\n        until.elementLocated(\n            By.xpath('//button[@data-testid=\"add-button\"]')\n        ),\n        10000\n    );\n    await addUserButton.click();\n    // ===== Isi form =====\n    let newUserName = \"Tita\" + Date.now();   // unik supaya mudah di-assert\n    let newAge = \"10\";\n    let newUsernameInput = await driver.wait(\n        until.elementLocated(\n         By.xpath('//input[@data-testid=\"username-input\"]')\n          ),\n         10000\n    );\n    let newAgeInput = await driver.findElement(\n        By.xpath('//input[@data-testid=\"age-input\"]')           \n    );\n    await newUsernameInput.sendKeys(newUserName);\n    await newAgeInput.sendKeys(newAge);\n    let submitButton = await driver.findElement(\n        By.xpath('//button[@data-testid=\"submit-button\"]')          \n    );\n    await submitButton.click();\n    // Assert 1: Notifikasi muncul dan memuat username yang diinput\n    let notification = await driver.wait(\n    until.elementLocated(\n        By.xpath('//*[contains(text(),\"successfully added\")]')\n    ),\n    10000\n    );\n    await driver.wait(until.elementIsVisible(notification), 10000);\n    let notifText = await notification.getText();\n    console.log(\"Teks notifikasi:\", notifText);  \n    assert.ok(notifText.toLowerCase().includes(\"successfully added\"));\n    assert.ok(notifText.includes(newUserName));\n    // Assert 2: Username baru masuk ke list users\n    let newUserInList = await driver.wait(\n        until.elementLocated(\n            By.xpath('//*[contains(text(),\"' + newUserName + '\")]')\n        ),\n        10000\n    );\n    assert.strictEqual(\n        await newUserInList.isDisplayed(),\n        true\n    );\n} finally {\n    await driver.quit();\n}",
+              "err": {
+                "message": "TimeoutError: Waiting for element to be located By(xpath, //*[contains(text(),\"successfully added\")])\nWait timed out after 10057ms",
+                "estack": "TimeoutError: Waiting for element to be located By(xpath, //*[contains(text(),\"successfully added\")])\nWait timed out after 10057ms\n    at /Users/gerardharahap/Documents/QA_Batch18/web-ui-automation/node_modules/selenium-webdriver/lib/webdriver.js:939:22\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)",
+                "diff": null
+              },
+              "uuid": "f5c0e078-41d1-48b1-9734-a97ae62e54aa",
+              "parentUUID": "02903015-097d-41db-8a0a-26a48e416bf8",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [],
+          "failures": [
+            "f5c0e078-41d1-48b1-9734-a97ae62e54aa"
+          ],
+          "pending": [],
+          "skipped": [],
+          "duration": 12459,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 60000
+        },
+        {
+          "uuid": "b5a4dd9c-be25-4bb1-9221-1b23bb3696e1",
+          "title": "Open Belajar Bareng - Login",
+          "fullFile": "/Users/gerardharahap/Documents/QA_Batch18/web-ui-automation/test/login.js",
+          "file": "/test/login.js",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "Should login successfully and display user page",
+              "fullTitle": "Open Belajar Bareng - Login Should login successfully and display user page",
+              "timedOut": false,
+              "duration": 2316,
+              "state": "passed",
+              "speed": "slow",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "let options = new chrome.Options();\noptions.addArguments(\"--disable-features=PasswordLeakDetection\");\noptions.setUserPreferences({\n    \"credentials_enable_service\": false,\n    \"profile.password_manager_enabled\": false,\n    \"profile.password_manager_leak_detection\": false\n});\nlet driver = await new Builder()\n    .forBrowser(\"chrome\")\n    .setChromeOptions(options)\n    .build();\nawait driver.get(\"https://belajar-bareng.onrender.com/\");\nlet usernameInput = await driver.wait(\n    until.elementLocated(\n    By.xpath('//input[@data-testid=\"username-input\"]')\n    ),\n    30000\n    );\n      \nlet passwordInput = await driver.findElement(\n    By.xpath('//input[@data-testid=\"password-input\"]')\n    );\nlet loginButton = await driver.findElement(\n    By.xpath('//button[@data-testid=\"login-button\"]')\n    );\nawait usernameInput.sendKeys(\"admin\"); \nawait passwordInput.sendKeys(\"admin\");\nawait loginButton.click();\n// Assert 1: Form login hilang = login berhasil\nawait driver.wait(until.stalenessOf(usernameInput), 10000);\nlet loginFormElements = await driver.findElements(\n    By.xpath('//input[@data-testid=\"username-input\"]')\n    );\n    assert.strictEqual(loginFormElements.length, 0);\n// Assert 2: Memeriksa URL di page selanjutnya setelah login\nawait driver.wait(until.urlContains(\"https://belajar-bareng.onrender.com/users\"), 10000); \nlet currentUrl = await driver.getCurrentUrl();\nassert.ok(currentUrl.includes(\"/users\"));",
+              "err": {},
+              "uuid": "3c1620d7-9267-47b2-9702-303f80786d22",
+              "parentUUID": "b5a4dd9c-be25-4bb1-9221-1b23bb3696e1",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [
+            "3c1620d7-9267-47b2-9702-303f80786d22"
+          ],
+          "failures": [],
+          "pending": [],
+          "skipped": [],
+          "duration": 2316,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 60000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 60000
+    }
+  ],
+  "meta": {
+    "mocha": {
+      "version": "11.8.0"
+    },
+    "mochawesome": {
+      "options": {
+        "quiet": false,
+        "reportFilename": "mochawesome",
+        "saveHtml": true,
+        "saveJson": true,
+        "consoleReporter": "spec",
+        "useInlineDiffs": false,
+        "code": true
+      },
+      "version": "8.1.1"
+    },
+    "marge": {
+      "options": null,
+      "version": "6.3.2"
+    }
+  }
+}
